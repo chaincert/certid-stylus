@@ -1,0 +1,24 @@
+{
+    "name": "flash-loan-arb-bot",
+    "version": "1.0.0",
+    "description": "Zero-capital flash loan arbitrage bot on Base chain using Aave V3",
+    "main": "src/bot/scanner.js",
+    "scripts": {
+        "compile": "hardhat compile",
+        "test": "hardhat test",
+        "deploy:testnet": "hardhat run scripts/deploy.js --network baseSepolia",
+        "deploy:mainnet": "hardhat run scripts/deploy.js --network base",
+        "bot": "node src/bot/scanner.js",
+        "bot:dry": "node src/bot/scanner.js --dry-run"
+    },
+    "dependencies": {
+        "chalk": "^4.1.2",
+        "dotenv": "^16.4.5",
+        "ethers": "^6.13.0"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+        "@openzeppelin/contracts": "^4.9.6",
+        "hardhat": "^2.22.0"
+    }
+}

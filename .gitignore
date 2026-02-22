@@ -1,0 +1,26 @@
+# Rust build artifacts
+target/
+*.rlib
+*.rmeta
+
+# Hardhat artifacts
+contracts-solidity/artifacts/
+contracts-solidity/artifacts_certid/
+contracts-solidity/cache/
+contracts-solidity/cache_certid/
+contracts-solidity/node_modules/
+contracts-solidity/typechain-types/
+contracts-solidity/coverage/
+contracts-solidity/coverage.json
+
+# Secrets — NEVER commit private keys
+.env
+contracts-solidity/.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
