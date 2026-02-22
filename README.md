@@ -1,61 +1,85 @@
-# CertID Stylus Verifier — Arbitrum L2
+# CertID Stylus — Silicon-to-Chain Identity on Arbitrum
 
-Hardware attestation verification contract built with **Arbitrum Stylus** (Rust → WASM).
+Rust-native NIST P-256 ECDSA verification engine for hardware-anchored identity, built with **Arbitrum Stylus** (Rust → WASM).
 
 ## Why Stylus?
 
 | Operation | Solidity (EVM) | Stylus (WASM) |
-|-----------|---------------|---------------|
-| TEE Signature Verify | ~5M gas | ~500K gas |
+|-----------|----------------|---------------|
+| P-256 Signature Verify | ~5M gas | ~500K gas |
 | Storage Mapping Read | ~2.1K gas | ~200 gas |
 | Cross-chain Score Update | ~50K gas | ~5K gas |
 
-> "We use Cosmos for Consensus and Stylus for Compute."
+> Rust WASM is ~10x cheaper than EVM equivalents for cryptographic operations.
 
 ## Architecture
 
 ```
-┌─────────────────────┐     ┌──────────────────────┐
-│  Cosmos L1 (certd)  │     │  Arbitrum L2 (Stylus) │
-│                     │     │                        │
-│  x/hardware module  │────▶│  CertIDVerifier.wasm   │
-│  Trust Scoring      │     │  TEE Verification      │
-│  Device Registry    │     │  Score Storage          │
-└─────────────────────┘     └──────────────────────┘
-        ▲                            │
-        │     Bridge Relayer         │
-        └────────────────────────────┘
+Hardware (Secure Enclave / FaceID)
+    │  NIST P-256 signature
+    ▼
+Rust Engine (Stylus WASM)           ← src/lib.rs
+    │  verify_prehash(msg_hash, sig, pubkey)
+    ▼
+Arbitrum L2 (on-chain result)
+    │  registration + fee
+    ▼
+CertID Manager (Solidity)           ← contracts-solidity/contracts_certid/CertID.sol
 ```
 
-## Contract API
+## Repository Structure
 
-| Function | Type | Description |
-|----------|------|-------------|
-| `register_device(bytes32, address)` | Write | Register a device with its owner |
-| `update_trust_score(bytes32, u64)` | Write | Relay trust score from Cosmos L1 |
-| `verify_tee_attestation(bytes32, bytes)` | Write | Verify TEE proof (WASM-optimized) |
-| `get_device_trust(bytes32)` | View | Read device trust score |
-| `get_device_owner(bytes32)` | View | Read device owner address |
-| `get_total_verifications()` | View | Total successful verifications |
+```
+certid-stylus/
+├── src/
+│   └── lib.rs                      # Rust/WASM P-256 verifier (Stylus entrypoint)
+├── contracts-solidity/
+│   ├── contracts_certid/
+│   │   └── CertID.sol              # Monetized manager contract (Toll Road architecture)
+│   ├── scripts/
+│   │   ├── deployCertID.js         # Hardhat deployment script (Arbitrum Sepolia)
+│   │   ├── deploy_certid.js        # Alternate deploy helper
+│   │   └── test_stylus_direct.js   # Off-chain verification test
+│   └── hardhat_certid.config.js    # Hardhat config (Arbitrum Sepolia)
+├── Cargo.toml
+└── Cargo.lock
+```
 
-## Build & Deploy
+## Deployed Contracts
+
+| Contract | Network | Address |
+|----------|---------|---------|
+| CertID Manager (Solidity) | Arbitrum Sepolia | `0x3c41b733658ECf278dDF140984279Ea571597167E` |
+| CertID Verifier (Stylus/WASM) | Arbitrum Sepolia | TBD |
+
+## Key Implementation Details
+
+- **`verify_prehash()`** — Verifies a pre-hashed `bytes32` message against a NIST P-256 signature, bypassing EVM gas limits via WASM execution
+- **SEC1 `0x04` prefix** — Properly stripped before passing raw `(x, y)` coordinates to the verifier
+- **Toll Road Registration** — `CertID.sol` enforces a `registrationFee` (ETH) per identity registration, creating a sustainable revenue model
+
+## Quick Start
 
 ```bash
-# Build
-cargo build --lib
+# Build the Rust/WASM engine
+cargo build --release --target wasm32-unknown-unknown
 
-# Check Stylus compatibility (requires cargo-stylus)
-cargo stylus check
+# Deploy the Solidity manager to Arbitrum Sepolia
+cd contracts-solidity
+npx hardhat run scripts/deployCertID.js --config hardhat_certid.config.js --network arbitrum-sepolia
 
-# Deploy to Arbitrum Sepolia (when ready)
-cargo stylus deploy \
-  --private-key $PRIVATE_KEY \
-  --endpoint https://sepolia-rollup.arbitrum.io/rpc
-
-# Run tests
-cargo test
+# Test the off-chain verifier
+node scripts/test_stylus_direct.js
 ```
 
-## License
+## Environment Variables
 
-Apache-2.0
+Copy `.env.example` to `.env` and fill in your values:
+
+```bash
+cp contracts-solidity/.env.example contracts-solidity/.env
+```
+
+Required variables:
+- `ARBITRUM_SEPOLIA_RPC_URL` — RPC endpoint
+- `PRIVATE_KEY` — Deployer wallet private key (**never commit this**)
