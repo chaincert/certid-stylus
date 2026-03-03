@@ -12,16 +12,14 @@ module.exports = {
             },
         },
     },
-    paths: {
-        sources: "./contracts_certid", // We are pointing directly to the folder we created
-        cache: "./cache_certid",
-        artifacts: "./artifacts_certid"
-    },
     networks: {
         arbitrumSepolia: {
             url: "https://sepolia-rollup.arbitrum.io/rpc",
             chainId: 421614,
-            accounts: ["[REDACTED_PRIVATE_KEY]"], // User's private key identified earlier
+            accounts: [process.env.PRIVATE_KEY || "[REDACTED_PRIVATE_KEY]"], // User's private key
         }
+    },
+    etherscan: {
+        apiKey: "[REDACTED_ETHERSCAN_API_KEY]"
     }
 };

@@ -1,33 +1,46 @@
 const hre = require("hardhat");
 
 async function main() {
-    console.log("Preparing deployment of CertID Manager Contract...");
+    console.log("Preparing deployment of the Monetized CertID Manager Contract...");
 
-    // 1. The address of your perfectly functioning Rust Stylus Engine
-    const STYLUS_ENGINE_ADDRESS = "0xea3b41aff7fdfb6b2c967b0aac4f639696bcb540";
-    const TREASURY_ADDRESS = "0xc68a92163f496ADCc7A8502fB2fdc7341fFdF589";
-    const INITIAL_FEE = hre.ethers.parseEther("0.0005");
+    // Get the deployer's wallet (This pays the gas for the deployment)
+    const [deployer] = await hre.ethers.getSigners();
+    console.log(`Deploying contracts with the account: ${deployer.address}`);
 
-    // 2. Grab the Contract Factory - the contract is CertIDManager in CertID.sol
+    // 1. Constructor Arguments
+    const STYLUS_ENGINE_ADDRESS = "0xea3b41aff7fdfb6b2c967b0aac4f639696bcb540"; // The Rust WASM Engine
+    const TREASURY_ADDRESS = "0xc68a92163f496ADCc7A8502fB2fdc7341fFdF589"; // Your Specified Treasury Wallet
+    const INITIAL_FEE = hre.ethers.parseEther("0.0005"); // ~$1.50 Registration Fee
+
+    // 2. Grab the Contract Factory
+    // Note: The contract name in the Solidity file is "CertIDManager"
     const CertIDManager = await hre.ethers.getContractFactory("CertIDManager");
 
-    // 3. Deploy the contract, passing the Stylus address into the constructor
-    console.log(`Deploying CertIDManager and linking to Stylus Engine at: ${STYLUS_ENGINE_ADDRESS}`);
-    const certIdContract = await CertIDManager.deploy(STYLUS_ENGINE_ADDRESS, TREASURY_ADDRESS, INITIAL_FEE);
+    // 3. Deploy the contract, passing the three arguments into the constructor
+    console.log(`\nDeploying CertIDManager...`);
+    console.log(` - Linking to Stylus Engine: ${STYLUS_ENGINE_ADDRESS}`);
+    console.log(` - Routing fees to Treasury: ${TREASURY_ADDRESS}`);
+    console.log(` - Initial Registration Fee: 0.0005 ETH`);
 
-    // Wait for the transaction to be mined
+    const certIdContract = await CertIDManager.deploy(
+        STYLUS_ENGINE_ADDRESS,
+        TREASURY_ADDRESS,
+        INITIAL_FEE
+    );
+
+    // 4. Wait for the transaction to be mined
     await certIdContract.waitForDeployment();
 
     const deployedAddress = await certIdContract.getAddress();
 
-    console.log("=================================================");
-    console.log("✅ CertID Solidity Contract Deployed!");
+    console.log("\n=================================================");
+    console.log("✅ CertID Solidity Manager Deployed!");
     console.log("🔗 Contract Address:", deployedAddress);
     console.log("🛠️  Network: Arbitrum Sepolia");
     console.log("=================================================");
 
     // Quick verification command for Arbiscan
-    console.log(`\nTo verify on Arbiscan, run:`);
+    console.log(`\nTo verify the contract source code on Arbiscan, run:`);
     console.log(`npx hardhat verify --network arbitrumSepolia ${deployedAddress} "${STYLUS_ENGINE_ADDRESS}" "${TREASURY_ADDRESS}" "${INITIAL_FEE}"`);
 }
 

@@ -1,0 +1,20 @@
+WARNING: You are currently using Node.js v25.2.1, which is not supported by Hardhat. This can lead to unexpected behavior. See https://v2.hardhat.org/nodejs-versions
+
+
+Compiled 1 Solidity file successfully (evm target: paris).
+Preparing deployment of the Monetized CertID Manager Contract...
+Deploying contracts with the account: 0x9f802e09650bC821977aF178a7c89759A59F0139
+
+Deploying CertIDManager...
+ - Linking to Stylus Engine: 0xea3b41aff7fdfb6b2c967b0aac4f639696bcb540
+ - Routing fees to Treasury: 0xc68a92163f496ADCc7A8502fB2fdc7341fFdF589
+ - Initial Registration Fee: 0.0005 ETH
+
+=================================================
+✅ CertID Solidity Manager Deployed!
+🔗 Contract Address: 0x67921Ae6eFA1c1Ca024725F425056FFaf7705c1E
+🛠️  Network: Arbitrum Sepolia
+=================================================
+
+To verify the contract source code on Arbiscan, run:
+npx hardhat verify --network arbitrumSepolia 0x67921Ae6eFA1c1Ca024725F425056FFaf7705c1E "0xea3b41aff7fdfb6b2c967b0aac4f639696bcb540" "0xc68a92163f496ADCc7A8502fB2fdc7341fFdF589" "500000000000000"
