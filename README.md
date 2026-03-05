@@ -50,7 +50,7 @@ certid-stylus/
 | Contract | Network | Address |
 |----------|---------|---------|
 | CertID Manager (Solidity) | Arbitrum Sepolia | `0x3c41b733658ECf278dDF140984279Ea571597167E` |
-| CertID Verifier (Stylus/WASM) | Arbitrum Sepolia | TBD |
+| CertID Verifier (Stylus/WASM) | Arbitrum Sepolia | `0x67921Ae6eFA1c1Ca024725F425056FFaf7705c1E`|
 
 ## Key Implementation Details
 
