@@ -10,7 +10,7 @@ async function main() {
     // 1. Constructor Arguments
     const STYLUS_ENGINE_ADDRESS = "0xea3b41aff7fdfb6b2c967b0aac4f639696bcb540"; // The Rust WASM Engine
     const TREASURY_ADDRESS = "0xc68a92163f496ADCc7A8502fB2fdc7341fFdF589"; // Your Specified Treasury Wallet
-    const INITIAL_FEE = hre.ethers.parseEther("0.0005"); // ~$1.50 Registration Fee
+    const INITIAL_FEE = 0; // Registration Fee (Set to 0 as requested)
 
     // 2. Grab the Contract Factory
     // Note: The contract name in the Solidity file is "CertIDManager"
@@ -20,7 +20,7 @@ async function main() {
     console.log(`\nDeploying CertIDManager...`);
     console.log(` - Linking to Stylus Engine: ${STYLUS_ENGINE_ADDRESS}`);
     console.log(` - Routing fees to Treasury: ${TREASURY_ADDRESS}`);
-    console.log(` - Initial Registration Fee: 0.0005 ETH`);
+    console.log(` - Initial Registration Fee: 0 ETH`);
 
     const certIdContract = await CertIDManager.deploy(
         STYLUS_ENGINE_ADDRESS,
