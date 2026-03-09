@@ -1,11 +1,12 @@
 const { ethers } = require('ethers');
+require('dotenv').config();
 
 async function fundBurner() {
     const provider = new ethers.JsonRpcProvider('https://sepolia-rollup.arbitrum.io/rpc');
-    const privateKey = '[REDACTED_PRIVATE_KEY]'; // from contracts-solidity/.env
+    const privateKey = process.env.PRIVATE_KEY;
     const wallet = new ethers.Wallet(privateKey, provider);
 
-    const burnerAddress = process.argv[2] || '0x58aF5798150D7a5752ff411Fd7D5290b693CAF7C';
+    const burnerAddress = process.argv[2] || process.env.BURNER_ADDRESS;
     const amount = ethers.parseEther('0.01'); // 0.01 ETH
 
     console.log(`Funding burner wallet ${burnerAddress} with ${ethers.formatEther(amount)} ETH`);

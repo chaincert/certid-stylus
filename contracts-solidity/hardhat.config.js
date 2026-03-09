@@ -16,10 +16,10 @@ module.exports = {
         arbitrumSepolia: {
             url: "https://sepolia-rollup.arbitrum.io/rpc",
             chainId: 421614,
-            accounts: [process.env.PRIVATE_KEY || "[REDACTED_PRIVATE_KEY]"], // User's private key
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
         }
     },
     etherscan: {
-        apiKey: "[REDACTED_ETHERSCAN_API_KEY]"
+        apiKey: process.env.ETHERSCAN_API_KEY
     }
 };
