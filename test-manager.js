@@ -2,7 +2,7 @@ const { ethers } = require("ethers");
 
 async function testManager() {
     const provider = new ethers.JsonRpcProvider("https://sepolia-rollup.arbitrum.io/rpc");
-    const managerAddress = "0x67921Ae6eFA1c1Ca024725F425056FFaf7705c1E";
+    const managerAddress = "0xB05dBBAe660C4F2ebD917638760e608b3c263CaA";
 
     const abi = [
         "function verifyBiometricLogin(bytes32 msgHash, bytes signature) external returns (bool)",

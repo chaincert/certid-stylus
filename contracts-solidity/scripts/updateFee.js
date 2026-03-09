@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
-    const CONTRACT_ADDRESS = "0x67921Ae6eFA1c1Ca024725F425056FFaf7705c1E";
+    const CONTRACT_ADDRESS = "0xB05dBBAe660C4F2ebD917638760e608b3c263CaA";
     const NEW_FEE = 0;
 
     const [deployer] = await hre.ethers.getSigners();

@@ -2,7 +2,7 @@ const { ethers } = require("ethers");
 
 // CONFIGURATION: Replace these with your actual deployment values
 const RPC_URL = "https://sepolia-rollup.arbitrum.io/rpc";
-const MANAGER_ADDRESS = "0x67921Ae6eFA1c1Ca024725F425056FFaf7705c1E";
+const MANAGER_ADDRESS = "0xB05dBBAe660C4F2ebD917638760e608b3c263CaA";
 const TEST_ADDRESS = "0x9f802e09650bC821977aF178a7c89759A59F0139";
 
 async function auditSystem() {

@@ -13,7 +13,7 @@ async function main() {
     const INITIAL_FEE = 0; // Registration Fee (Set to 0 as requested)
 
     // 2. Grab the Contract Factory
-    // Note: The contract name in the Solidity file is "CertIDManager"
+    // Note: The secure contract remains named "CertIDManager" in CertID_Secure.sol
     const CertIDManager = await hre.ethers.getContractFactory("CertIDManager");
 
     // 3. Deploy the contract, passing the three arguments into the constructor

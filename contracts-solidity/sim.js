@@ -12,7 +12,7 @@ const CERTID_ABI = [
 ];
 async function run() {
     const provider = new ethers.JsonRpcProvider("https://sepolia-rollup.arbitrum.io/rpc");
-    const contractAddress = "0x67921Ae6eFA1c1Ca024725F425056FFaf7705c1E";
+    const contractAddress = "0xB05dBBAe660C4F2ebD917638760e608b3c263CaA";
     const user = "0xc68a92163f496ADCc7A8502fB2fdc7341fFdF589";
     const pubKey = "0x13eb2998ff367ed274af56808d3ff7dd7cc16870f18a588550c1b687f9f72b823b8da102dcda361c5b94be7028e3042a45eb8584b3929ae3f8eeae499f566244";
     
